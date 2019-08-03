@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+
+    <script>
+        $(function() {
+
+                 $('#search').keyup(function() {
+
+         $.ajax({
+            type: "GET",
+            url: "/search_status",
+            data: {
+                'search_text' : $('#search').val(),
+                'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+            },
+            success: searchSuccess,
+            dataType: 'html'
+        });
+    });
+});
+
+function searchSuccess(data, textStatus, jqXHR)
+{
+    $('#search-results').html(data)
+}
+    </script>
+</head>
+<body><div><h1>Welcome !!</h1>
+<input type="text" id="search" name="search" />
+<br>
+    <ul id="search-results">
+        {% for i in statuss%}
+        <p>{{i.Village}}</p>
+        {%endfor%}
+    </ul><br>
+
+    <div>
+{% if statuss > 0 %}
+    <ul >
+        {% for i in statuss %}
+            <li>
+                <p>{{i.pincode}}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No status found.</p>
+{% endif %}
+        <div>
+</body>
+</html>
